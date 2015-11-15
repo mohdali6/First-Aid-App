@@ -1,0 +1,19 @@
+{
+  "Cut and Bruises": {
+    "wash": [
+      "cold water",
+      "Antiseptic like Dettol"
+    ],
+    "Cover": [
+      "Band Aid",
+      "Cotton"
+    ],
+    "Relax": []
+  },
+  "Burn": {
+    "Wash": [
+      "Cold water"
+    ],
+    "Apply Oinment": []
+  }
+}
