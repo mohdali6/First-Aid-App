@@ -16,10 +16,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    HashMap<String, FirstAidSteps> firstAidMap = new HashMap<String, FirstAidSteps>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,16 +75,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-    *    Reads JSON data recievet String parameter
+    *    Reads JSON data recieved as String parameter
     */
     public String readJSONData(String fileName, Context con) {
 
         try {
-            JSONObject jsonObject = new JSONObject(loadJsonFromAsset(fileName, con));
-            JSONArray accidentKeys = jsonObject.names();
+            String accidentName = null;
+            String stepName = null;
+            ArrayList<String> steps = new ArrayList<String>();
 
-            for(int i=0; i<jsonObject.length(); i++) {
-                Log.v(TAG, accidentKeys.getString(i));
+            JSONObject accidents = new JSONObject(loadJsonFromAsset(fileName, con));
+            JSONArray accidentKeys = accidents.names();
+
+            for (int i = 0; i < accidents.length(); i++) {
+                accidentName = accidentKeys.getString(i);
+                JSONObject firstAidSteps = accidents.getJSONObject(accidentName);
+                JSONArray firstAidStepsKeys = firstAidSteps.names();
+
+                for (int j = 0; j < firstAidSteps.length(); j++) {
+                    stepName = firstAidStepsKeys.getString(j);
+                    JSONArray aidSteps = firstAidSteps.getJSONArray(stepName);
+
+                    steps.clear();
+
+                    if (aidSteps != null) {
+                        for (int k = 0; k < aidSteps.length(); k++) {
+                            steps.add(aidSteps.get(k).toString());
+                        }
+                    }
+
+                    Log.v(TAG, "StepName: " + stepName);
+                    Log.v(TAG, "Steps: " + aidSteps.toString());
+                    Log.v(TAG, "StepsArray: " + steps.toString());
+                }
+
+                Log.v(TAG, "Accident Name: " + accidentName);
             }
 
         } catch (JSONException | IOException e) {
