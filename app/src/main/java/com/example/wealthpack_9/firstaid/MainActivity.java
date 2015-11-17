@@ -22,7 +22,6 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    HashMap<String, FirstAidSteps> firstAidMap = new HashMap<String, FirstAidSteps>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     //Responds to button click
     public void showTips(View view) {
         Context con = view.getContext();
-        readJSONData("data.json", con);
+        readJsonData("data.json", con);
     }
 
     /*
@@ -77,12 +76,15 @@ public class MainActivity extends AppCompatActivity {
     /*
     *    Reads JSON data recieved as String parameter
     */
-    public String readJSONData(String fileName, Context con) {
+    public HashMap<String, ArrayList<FirstAidSteps>> readJsonData(String fileName, Context con) {
+        HashMap<String, ArrayList<FirstAidSteps>> firstAidMap = new HashMap<>();
 
         try {
             String accidentName = null;
             String stepName = null;
-            ArrayList<String> steps = new ArrayList<String>();
+            ArrayList<String> steps;
+            FirstAidSteps firstAidStepsObj;
+            ArrayList<FirstAidSteps> firstAidStepsObjArrayList;
 
             JSONObject accidents = new JSONObject(loadJsonFromAsset(fileName, con));
             JSONArray accidentKeys = accidents.names();
@@ -91,12 +93,13 @@ public class MainActivity extends AppCompatActivity {
                 accidentName = accidentKeys.getString(i);
                 JSONObject firstAidSteps = accidents.getJSONObject(accidentName);
                 JSONArray firstAidStepsKeys = firstAidSteps.names();
+                firstAidStepsObjArrayList = new ArrayList<>();
 
                 for (int j = 0; j < firstAidSteps.length(); j++) {
                     stepName = firstAidStepsKeys.getString(j);
                     JSONArray aidSteps = firstAidSteps.getJSONArray(stepName);
 
-                    steps.clear();
+                    steps = new ArrayList<>();
 
                     if (aidSteps != null) {
                         for (int k = 0; k < aidSteps.length(); k++) {
@@ -104,12 +107,23 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    Log.v(TAG, "StepName: " + stepName);
-                    Log.v(TAG, "Steps: " + aidSteps.toString());
-                    Log.v(TAG, "StepsArray: " + steps.toString());
+                    firstAidStepsObj = new FirstAidSteps(stepName, steps);
+                    firstAidStepsObjArrayList.add(firstAidStepsObj);
                 }
 
-                Log.v(TAG, "Accident Name: " + accidentName);
+                firstAidMap.put(accidentName, firstAidStepsObjArrayList);
+            }
+
+            for (HashMap.Entry<String, ArrayList<FirstAidSteps>> entry : firstAidMap.entrySet()) {
+                Log.v(TAG, "Accident: " + entry.getKey());
+
+                for (FirstAidSteps f: entry.getValue()) {
+                    Log.v(TAG, "StepName: " + f.getStepName());
+
+                    for (String s: f.getSteps()) {
+                        Log.v(TAG, "Steps: " + s);
+                    }
+                }
             }
 
         } catch (JSONException | IOException e) {
@@ -117,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
-        return null;
+        return firstAidMap;
     }
 
     /*
@@ -125,9 +139,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public class FirstAidSteps {
         private final String stepName;
-        private final String[] steps;
+        private final ArrayList<String> steps;
 
-        public FirstAidSteps(String stepName, String[] steps) {
+        public FirstAidSteps(String stepName, ArrayList<String> steps) {
             this.stepName = stepName;
             this.steps = steps;
         }
@@ -136,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             return stepName;
         }
 
-        public String[] getSteps() {
+        public ArrayList<String> getSteps() {
             return steps;
         }
     }
