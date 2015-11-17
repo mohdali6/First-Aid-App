@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +18,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +30,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        TreeMap<String, ArrayList<FirstAidSteps>> firstAidMap = readJsonData("data.json", getBaseContext());
+
+        Button buttons[] = {
+                (Button) findViewById(R.id.button_1),
+                (Button) findViewById(R.id.button_2),
+                (Button) findViewById(R.id.button_3),
+                (Button) findViewById(R.id.button_4),
+                (Button) findViewById(R.id.button_5),
+                (Button) findViewById(R.id.button_6),
+        };
+
+        int i = 0;
+
+        for (TreeMap.Entry<String, ArrayList<FirstAidSteps>> entry: firstAidMap.entrySet()) {
+            if (i < 6) {
+                buttons[i].setText(entry.getKey());
+                i++;
+            }
+        }
+
     }
 
     @Override
@@ -76,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
     /*
     *    Reads JSON data recieved as String parameter
     */
-    public HashMap<String, ArrayList<FirstAidSteps>> readJsonData(String fileName, Context con) {
-        HashMap<String, ArrayList<FirstAidSteps>> firstAidMap = new HashMap<>();
+    public TreeMap<String, ArrayList<FirstAidSteps>> readJsonData(String fileName, Context con) {
+        TreeMap<String, ArrayList<FirstAidSteps>> firstAidMap = new TreeMap<>();
 
         try {
             String accidentName = null;
@@ -114,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 firstAidMap.put(accidentName, firstAidStepsObjArrayList);
             }
 
-            for (HashMap.Entry<String, ArrayList<FirstAidSteps>> entry : firstAidMap.entrySet()) {
+            for (TreeMap.Entry<String, ArrayList<FirstAidSteps>> entry : firstAidMap.entrySet()) {
                 Log.v(TAG, "Accident: " + entry.getKey());
 
                 for (FirstAidSteps f: entry.getValue()) {
