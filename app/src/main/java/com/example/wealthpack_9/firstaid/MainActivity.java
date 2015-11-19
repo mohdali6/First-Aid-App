@@ -77,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Responds to button click
     public void showTips(View view) {
-        Context con = view.getContext();
-        readJsonData("data.json", con);
     }
 
     /*
