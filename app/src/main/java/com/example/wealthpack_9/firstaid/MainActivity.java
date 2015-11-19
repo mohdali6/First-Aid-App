@@ -1,6 +1,7 @@
 package com.example.wealthpack_9.firstaid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import java.util.TreeMap;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    TreeMap<String, ArrayList<FirstAidSteps>> firstAidMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        TreeMap<String, ArrayList<FirstAidSteps>> firstAidMap = readJsonData("data.json", getBaseContext());
+        firstAidMap = readJsonData("data.json", getBaseContext());
 
         Button buttons[] = {
                 (Button) findViewById(R.id.button_1),
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 i++;
             }
         }
-
     }
 
     @Override
@@ -77,7 +78,12 @@ public class MainActivity extends AppCompatActivity {
 
     //Responds to button click
     public void showTips(View view) {
+        Button button = (Button)view;
+        String buttonText = button.getText().toString();
 
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putParcelableArrayListExtra("accident_name", firstAidMap.get(buttonText));
+        startActivity(intent);
     }
 
     /*
