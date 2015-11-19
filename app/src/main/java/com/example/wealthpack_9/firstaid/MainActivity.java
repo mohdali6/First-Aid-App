@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Responds to button click
     public void showTips(View view) {
+
     }
 
     /*
@@ -152,26 +153,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return firstAidMap;
-    }
-
-    /*
-     *     Data structure for storing JSON First Aid data
-     */
-    public class FirstAidSteps {
-        private final String stepName;
-        private final ArrayList<String> steps;
-
-        public FirstAidSteps(String stepName, ArrayList<String> steps) {
-            this.stepName = stepName;
-            this.steps = steps;
-        }
-
-        public String getStepName() {
-            return stepName;
-        }
-
-        public ArrayList<String> getSteps() {
-            return steps;
-        }
     }
 }
