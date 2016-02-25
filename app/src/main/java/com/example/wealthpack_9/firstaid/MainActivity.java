@@ -34,24 +34,24 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         firstAidMap = readJsonData("data.json", getBaseContext());
-
-        Button buttons[] = {
-                (Button) findViewById(R.id.button_1),
-                (Button) findViewById(R.id.button_2),
-                (Button) findViewById(R.id.button_3),
-                (Button) findViewById(R.id.button_4),
-                (Button) findViewById(R.id.button_5),
-                (Button) findViewById(R.id.button_6),
-        };
-
-        int i = 0;
-
-        for (TreeMap.Entry<String, ArrayList<FirstAidSteps>> entry: firstAidMap.entrySet()) {
-            if (i < 6) {
-                buttons[i].setText(entry.getKey());
-                i++;
-            }
-        }
+//
+//        Button buttons[] = {
+//                (Button) findViewById(R.id.button_1),
+//                (Button) findViewById(R.id.button_2),
+//                (Button) findViewById(R.id.button_3),
+//                (Button) findViewById(R.id.button_4),
+//                (Button) findViewById(R.id.button_5),
+//                (Button) findViewById(R.id.button_6),
+//        };
+//
+//        int i = 0;
+//
+//        for (TreeMap.Entry<String, ArrayList<FirstAidSteps>> entry : firstAidMap.entrySet()) {
+//            if (i < 6) {
+//                buttons[i].setText(entry.getKey());
+//                i++;
+//            }
+//        }
     }
 
     @Override
@@ -78,12 +78,19 @@ public class MainActivity extends AppCompatActivity {
 
     //Responds to button click
     public void showTips(View view) {
-        Button button = (Button)view;
+        Button button = (Button) view;
         String buttonText = button.getText().toString();
+
+        Log.v("Clicked", "Here");
 
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putParcelableArrayListExtra("accident_name", firstAidMap.get(buttonText));
         startActivity(intent);
+    }
+
+    //Responds to button click
+    public void showTips1(View view) {
+        Log.v("Clicked", "Here");
     }
 
     /*
@@ -144,10 +151,10 @@ public class MainActivity extends AppCompatActivity {
             for (TreeMap.Entry<String, ArrayList<FirstAidSteps>> entry : firstAidMap.entrySet()) {
                 Log.v(TAG, "Accident: " + entry.getKey());
 
-                for (FirstAidSteps f: entry.getValue()) {
+                for (FirstAidSteps f : entry.getValue()) {
                     Log.v(TAG, "StepName: " + f.getStepName());
 
-                    for (String s: f.getSteps()) {
+                    for (String s : f.getSteps()) {
                         Log.v(TAG, "Steps: " + s);
                     }
                 }
