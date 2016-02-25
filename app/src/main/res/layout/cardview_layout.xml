@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="1dp"
     android:layout_marginTop="1dp"
-    android:onClick="showTips1"
+    android:onClick="showTips"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="2dp"
     card_view:cardUseCompatPadding="true">
@@ -22,7 +22,7 @@
             android:src="@drawable/a" />
 
         <TextView
-            android:id="@+id/myImageViewText"
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/image"

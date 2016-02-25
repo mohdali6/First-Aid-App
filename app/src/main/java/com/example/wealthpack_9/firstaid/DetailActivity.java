@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,8 +21,6 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         ArrayList<FirstAidSteps> l =  i.getParcelableArrayListExtra("accident_name");
-        Toast toast = Toast.makeText(getApplicationContext(), l.toString(), Toast.LENGTH_SHORT);
-        toast.show();
 
         ListView listView = (ListView) findViewById(R.id.list_view_steps);
         StepsAdapter adapter1 = new StepsAdapter(this, l);
